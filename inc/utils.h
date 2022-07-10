@@ -15,7 +15,7 @@
  *
  * Returns: 0 on success or -1 if an error occurred
  */
-UNIADDR_API s32 uniaddr_f_in4(struct uniaddr *addr, s8 *ptr, s32 len);
+UNIADDR_API s8 uniaddr_f_in4(struct uniaddr *addr, s8 *ptr, s32 len);
 
 
 /*
@@ -27,7 +27,7 @@ UNIADDR_API s32 uniaddr_f_in4(struct uniaddr *addr, s8 *ptr, s32 len);
  *
  * Returns: 0 on success or -1 if an error occurred
  */
-UNIADDR_API s32 uniaddr_f_in6(struct uniaddr *addr, s8 *ptr, s32 len);
+UNIADDR_API s8 uniaddr_f_in6(struct uniaddr *addr, s8 *ptr, s32 len);
 
 
 /*
@@ -39,7 +39,7 @@ UNIADDR_API s32 uniaddr_f_in6(struct uniaddr *addr, s8 *ptr, s32 len);
  *
  * Returns: 0 on success or -1 if an error occurred
  */
-UNIADDR_API s32 uniaddr_f_sa4(struct uniaddr *addr, s8 *ptr, s32 len);
+UNIADDR_API s8 uniaddr_f_sa4(struct uniaddr *addr, s8 *ptr, s32 len);
 
 
 /*
@@ -51,7 +51,7 @@ UNIADDR_API s32 uniaddr_f_sa4(struct uniaddr *addr, s8 *ptr, s32 len);
  *
  * Returns: 0 on success or -1 if an error occurred
  */
-UNIADDR_API s32 uniaddr_f_sa6(struct uniaddr *addr, s8 *ptr, s32 len);
+UNIADDR_API s8 uniaddr_f_sa6(struct uniaddr *addr, s8 *ptr, s32 len);
 
 
 

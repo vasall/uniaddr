@@ -61,7 +61,7 @@ UNIADDR_API void uniaddr_clear(struct uniaddr *addr);
  *
  * Returns: 0 on success or -1 if an error occurred
  */
-UNIADDR_API s32 uniaddr_copy(struct uniaddr *out, struct uniaddr *in);
+UNIADDR_API s8 uniaddr_copy(struct uniaddr *out, struct uniaddr *in);
 
 
 /*
@@ -74,7 +74,7 @@ UNIADDR_API s32 uniaddr_copy(struct uniaddr *out, struct uniaddr *in);
  *
  * Returns: 0 on success or -1 if an error occurred
  */
-UNIADDR_API s32 uniaddr_parse(struct uniaddr *addr, unitype_t type,
+UNIADDR_API s8 uniaddr_parse(struct uniaddr *addr, unitype_t type,
 		void *ptr, s32 len);
 
 
@@ -99,7 +99,7 @@ UNIADDR_API s32 uniaddr_str(struct uniaddr *addr, s8 *str, s32 lim);
  *
  * Returns: 0 on success or -1 if an error occurred
  */
-UNIADDR_API s32 uniaddr_fsa(struct uniaddr *addr, struct sockaddr *sa);
+UNIADDR_API s8 uniaddr_fsa(struct uniaddr *addr, struct sockaddr *sa);
 
 
 /*
@@ -120,7 +120,7 @@ UNIADDR_API void unimask_clear(struct unimask *mask);
  *
  * Returns: 0 on success or -1 if an error occurred
  */
-UNIADDR_API s32 unimask_set(struct unimask *mask, s16 off, s32 len,
+UNIADDR_API s8 unimask_set(struct unimask *mask, s16 off, s32 len,
 		u8 *ptr); 
 
 /*
@@ -131,7 +131,7 @@ UNIADDR_API s32 unimask_set(struct unimask *mask, s16 off, s32 len,
  *
  * Returns: 0 on success or -1 if an error occurred
  */
-UNIADDR_API s32 unimask_faddr(struct unimask *mask,
+UNIADDR_API s8 unimask_faddr(struct unimask *mask,
 		struct uniaddr *addr);
 
 
@@ -143,7 +143,7 @@ UNIADDR_API s32 unimask_faddr(struct unimask *mask,
  *
  * Returns: 1 if the mask fits, 0 if not and -1 if an error occurred
  */
-UNIADDR_API s32 unimask_use(struct uniaddr *addr, struct unimask *mask);
+UNIADDR_API s8 unimask_use(struct uniaddr *addr, struct unimask *mask);
 
 
 /*
@@ -154,6 +154,6 @@ UNIADDR_API s32 unimask_use(struct uniaddr *addr, struct unimask *mask);
  *
  * Returns: 0 on success or -1 if an error occurred
  */
-UNIADDR_API s32 uniaddr_dump(struct uniaddr *addr);
+UNIADDR_API s8 uniaddr_dump(struct uniaddr *addr);
 
 #endif /* _UNIADDR_UNIADDR_H */

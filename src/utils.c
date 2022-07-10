@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-UNIADDR_API s32 uniaddr_f_in4(struct uniaddr *addr, s8 *ptr, s32 len)
+UNIADDR_API s8 uniaddr_f_in4(struct uniaddr *addr, s8 *ptr, s32 len)
 {
 	if(!addr || !ptr || len < 0) {
 		ALARM(ALARM_WARN, "addr or ptr undefined or len invalid");
@@ -24,7 +24,7 @@ err_return:
 }
 
 
-UNIADDR_API s32 uniaddr_f_in6(struct uniaddr *addr, s8 *ptr, s32 len)
+UNIADDR_API s8 uniaddr_f_in6(struct uniaddr *addr, s8 *ptr, s32 len)
 {
 	if(!addr || !ptr || len < 0) {
 		ALARM(ALARM_WARN, "addr or ptr undefined or len invalid");
@@ -43,7 +43,7 @@ err_return:
 }
 
 
-UNIADDR_API s32 uniaddr_f_sa4(struct uniaddr *addr, s8 *ptr, s32 len)
+UNIADDR_API s8 uniaddr_f_sa4(struct uniaddr *addr, s8 *ptr, s32 len)
 {
 	s16 port_num;
 	s32 i;
@@ -96,7 +96,7 @@ err_return:
 }
 
 
-UNIADDR_API s32 uniaddr_f_sa6(struct uniaddr *addr, s8 *ptr, s32 len)
+UNIADDR_API s8 uniaddr_f_sa6(struct uniaddr *addr, s8 *ptr, s32 len)
 {
 	s8 port_num;
 	s32 i;

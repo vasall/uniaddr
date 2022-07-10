@@ -15,7 +15,7 @@ UNIADDR_API void uniaddr_clear(struct uniaddr *addr)
 }
 
 
-UNIADDR_API s32 uniaddr_copy(struct uniaddr *out, struct uniaddr *in)
+UNIADDR_API s8 uniaddr_copy(struct uniaddr *out, struct uniaddr *in)
 {
 	if(!out || !in) {
 		ALARM(ALARM_WARN, "out or in undefined");
@@ -27,7 +27,7 @@ UNIADDR_API s32 uniaddr_copy(struct uniaddr *out, struct uniaddr *in)
 }
 
 
-UNIADDR_API s32 uniaddr_parse(struct uniaddr *addr, unitype_t type,
+UNIADDR_API s8 uniaddr_parse(struct uniaddr *addr, unitype_t type,
 		void *ptr, s32 len)
 {
 	if(!addr || !ptr || len < 0) {
@@ -112,7 +112,7 @@ err_return:
 }
 
 
-UNIADDR_API s32 uniaddr_fsa(struct uniaddr *addr, struct sockaddr *sa)
+UNIADDR_API s8 uniaddr_fsa(struct uniaddr *addr, struct sockaddr *sa)
 {
 	if(!addr || !sa) {
 		ALARM(ALARM_WARN, "addr or sa undefined");
@@ -163,7 +163,7 @@ UNIADDR_API void unimask_clear(struct unimask *mask)
 
 
 
-UNIADDR_API s32 unimask_set(struct unimask *mask, s16 off, s32 len,
+UNIADDR_API s8 unimask_set(struct unimask *mask, s16 off, s32 len,
 		u8 *ptr)
 {
 	if(!mask) {
@@ -181,7 +181,7 @@ UNIADDR_API s32 unimask_set(struct unimask *mask, s16 off, s32 len,
 }
 
 
-UNIADDR_API s32 unimask_faddr(struct unimask *mask,
+UNIADDR_API s8 unimask_faddr(struct unimask *mask,
 		struct uniaddr *addr)
 {
 	if(!mask || !addr) {
@@ -200,7 +200,7 @@ UNIADDR_API s32 unimask_faddr(struct unimask *mask,
 }
 
 
-UNIADDR_API s32 unimask_use(struct uniaddr *addr, struct unimask *mask)
+UNIADDR_API s8 unimask_use(struct uniaddr *addr, struct unimask *mask)
 {
 	s32 i;
 
@@ -221,7 +221,7 @@ UNIADDR_API s32 unimask_use(struct uniaddr *addr, struct unimask *mask)
 #define UNIADDR_DUMP_LINE   16
 
 
-UNIADDR_API s32 uniaddr_dump(struct uniaddr *addr)
+UNIADDR_API s8 uniaddr_dump(struct uniaddr *addr)
 {
 	u8 buf[17];
 	u8 *pc = (u8 *)addr;
