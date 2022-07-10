@@ -1,9 +1,11 @@
 #include "utils.h"
 
+#include "imports.h"
+
 #include <stdlib.h>
 #include <string.h>
 
-UNIADDR_API int uniaddr_f_in4(struct uniaddr *addr, char *ptr, int len)
+UNIADDR_API s32 uniaddr_f_in4(struct uniaddr *addr, s8 *ptr, s32 len)
 {
 	if(!addr || !ptr || len < 0) {
 		ALARM(ALARM_WARN, "addr or ptr undefined or len invalid");
@@ -22,7 +24,7 @@ err_return:
 }
 
 
-UNIADDR_API int uniaddr_f_in6(struct uniaddr *addr, char *ptr, int len)
+UNIADDR_API s32 uniaddr_f_in6(struct uniaddr *addr, s8 *ptr, s32 len)
 {
 	if(!addr || !ptr || len < 0) {
 		ALARM(ALARM_WARN, "addr or ptr undefined or len invalid");
@@ -41,14 +43,14 @@ err_return:
 }
 
 
-UNIADDR_API int uniaddr_f_sa4(struct uniaddr *addr, char *ptr, int len)
+UNIADDR_API s32 uniaddr_f_sa4(struct uniaddr *addr, s8 *ptr, s32 len)
 {
-	short port_num;
-	int i;
+	s16 port_num;
+	s32 i;
 
-	int brk;
-	char str_ip4[64];
-	char str_port[8];
+	s32 brk;
+	s8 str_ip4[64];
+	s8 str_port[8];
 
 	if(!addr || !ptr || len < 0) {
 		ALARM(ALARM_WARN, "addr or ptr undefined or len invalid");
@@ -58,7 +60,7 @@ UNIADDR_API int uniaddr_f_sa4(struct uniaddr *addr, char *ptr, int len)
 
 	brk = -1;
 	for(i = len - 1; i >= 0; i--) {
-		if(((char *)ptr)[i] == ':') {
+		if(((s8 *)ptr)[i] == ':') {
 			brk = i;
 			break;
 		}
@@ -76,13 +78,13 @@ UNIADDR_API int uniaddr_f_sa4(struct uniaddr *addr, char *ptr, int len)
 	str_port[len - i + 1] = 0;
 
 	/* Write address to buffer */
-	if(inet_pton(AF_INET, str_ip4, addr->data) != 1) {
+	if(inet_pton(AF_INET, (char *)str_ip4, addr->data) != 1) {
 		ALARM(ALARM_ERR, "Could not convert IPv4 using inet_pton");
 		goto err_return;
 	}
 
 	/* Write port to buffer */
-	port_num = htons(atoi(str_port));
+	port_num = htons(atoi((char *)str_port));
 	memcpy(addr->data + 4, &port_num, 2);
 
 	addr->type = UNITYPE_SA4;
@@ -94,14 +96,14 @@ err_return:
 }
 
 
-UNIADDR_API int uniaddr_f_sa6(struct uniaddr *addr, char *ptr, int len)
+UNIADDR_API s32 uniaddr_f_sa6(struct uniaddr *addr, s8 *ptr, s32 len)
 {
-	short port_num;
-	int i;
+	s8 port_num;
+	s32 i;
 
-	int brk;
-	char str_ip6[64];
-	char str_port[8];
+	s32 brk;
+	s8 str_ip6[64];
+	s8 str_port[8];
 
 	if(!addr || !ptr || len < 0) {
 		ALARM(ALARM_WARN, "addr or ptr undefined or len invalid");
@@ -111,7 +113,7 @@ UNIADDR_API int uniaddr_f_sa6(struct uniaddr *addr, char *ptr, int len)
 
 	brk = -1;
 	for(i = len - 1; i >= 0; i--) {
-		if(((char *)ptr)[i] == ':') {
+		if(((s8 *)ptr)[i] == ':') {
 			brk = i;
 			break;
 		}
@@ -129,13 +131,13 @@ UNIADDR_API int uniaddr_f_sa6(struct uniaddr *addr, char *ptr, int len)
 	str_port[len - i + 1] = 0;
 
 	/* Write address to buffer */
-	if(inet_pton(AF_INET6, str_ip6, addr->data) != 1) {
+	if(inet_pton(AF_INET6, (char *)str_ip6, addr->data) != 1) {
 		ALARM(ALARM_ERR, "Could not convert IPv6 using inet_pton");
 		goto err_return;
 	}
 
 	/* Write port to buffer */
-	port_num = htons(atoi(str_port));
+	port_num = htons(atoi((char *)str_port));
 	memcpy(addr->data + 16, &port_num, 2);
 
 	addr->type = UNITYPE_SA6;
@@ -147,10 +149,10 @@ err_return:
 }
 
 
-UNIADDR_API int uniaddr_str_in4(struct uniaddr *addr, char *str, int lim)
+UNIADDR_API s32 uniaddr_str_in4(struct uniaddr *addr, s8 *str, s32 lim)
 {
-	char swpbuf[128];
-	int swplen;	
+	s8 swpbuf[128];
+	s32 swplen;	
 
 	if(!addr || addr->type != UNITYPE_IN4 || !str || lim < 0) {
 		ALARM(ALARM_WARN, "addr or str undefined or wrong address type "
@@ -158,14 +160,14 @@ UNIADDR_API int uniaddr_str_in4(struct uniaddr *addr, char *str, int lim)
 		return -1;
 	}
 
-	if(inet_ntop(AF_INET, addr->data, swpbuf, 128) == NULL)
+	if(inet_ntop(AF_INET, addr->data, (char *)swpbuf, 128) == NULL)
 		goto err_return;
-	swplen = strlen(swpbuf) + 1;
+	swplen = strlen((char *)swpbuf) + 1;
 
 	if(swplen > lim)
 		goto err_return;
 
-	strcpy(str, swpbuf);
+	strcpy((char *)str, (char *)swpbuf);
 	return swplen;
 
 err_return:
@@ -174,10 +176,10 @@ err_return:
 }
 
 
-UNIADDR_API int uniaddr_str_in6(struct uniaddr *addr, char *str, int lim)
+UNIADDR_API s32 uniaddr_str_in6(struct uniaddr *addr, s8 *str, s32 lim)
 {
-	char swpbuf[128];
-	int swplen;
+	s8 swpbuf[128];
+	s32 swplen;
 
 	if(!addr || addr->type != UNITYPE_IN6 || !str || lim < 0) {
 		ALARM(ALARM_WARN, "addr or str undefined or wrong address type "
@@ -185,14 +187,14 @@ UNIADDR_API int uniaddr_str_in6(struct uniaddr *addr, char *str, int lim)
 		return -1;
 	}
 
-	if(inet_ntop(AF_INET6, addr->data, swpbuf, 128) == NULL)
+	if(inet_ntop(AF_INET6, addr->data, (char *)swpbuf, 128) == NULL)
 		goto err_return;
-	swplen = strlen(swpbuf) + 1;
+	swplen = strlen((char *)swpbuf) + 1;
 
 	if(swplen > lim)
 		goto err_return;
 
-	strcpy(str, swpbuf);
+	strcpy((char *)str, (char *)swpbuf);
 	return swplen;
 
 err_return:
@@ -201,15 +203,15 @@ err_return:
 }
 
 
-UNIADDR_API int uniaddr_str_sa4(struct uniaddr *addr, char *str, int lim)
+UNIADDR_API s32 uniaddr_str_sa4(struct uniaddr *addr, s8 *str, s32 lim)
 {
-	unsigned char mdl_in4[4];
-	short mdl_port;
+	u8 mdl_in4[4];
+	s16 mdl_port;
 
-	char swp_in4[128];
-	int swp_in4_len;
-	char swp_port[8];
-	int swp_port_len;
+	s8 swp_in4[128];
+	s32 swp_in4_len;
+	s8 swp_port[8];
+	s32 swp_port_len;
 
 	if(!addr || addr->type != UNITYPE_SA4 || !str || lim < 0) {
 		ALARM(ALARM_WARN, "addr or str undefined or wrong address type "
@@ -220,12 +222,12 @@ UNIADDR_API int uniaddr_str_sa4(struct uniaddr *addr, char *str, int lim)
 	memcpy(mdl_in4, addr->data, 4);
 	memcpy(&mdl_port, addr->data + 4, 2);
 
-	if(inet_ntop(AF_INET, mdl_in4, swp_in4, 64) == NULL)
+	if(inet_ntop(AF_INET, mdl_in4, (char *)swp_in4, 64) == NULL)
 		goto err_return;
-	swp_in4_len = strlen(swp_in4);
+	swp_in4_len = strlen((char *)swp_in4);
 
 	mdl_port = htons(mdl_port);
-	if((swp_port_len = sprintf(swp_port, "%d", mdl_port)) < 0)
+	if((swp_port_len = sprintf((char *)swp_port, "%d", mdl_port)) < 0)
 		goto err_return;
 
 	if(swp_in4_len + swp_port_len + 1 > lim)
@@ -244,15 +246,15 @@ err_return:
 }
 
 
-UNIADDR_API int uniaddr_str_sa6(struct uniaddr *addr, char *str, int lim)
+UNIADDR_API s32 uniaddr_str_sa6(struct uniaddr *addr, s8 *str, s32 lim)
 {
-	unsigned char mdl_in6[16];
-	short mdl_port;
+	u8 mdl_in6[16];
+	s16 mdl_port;
 
-	char swp_in6[128];
-	int swp_in6_len;
-	char swp_port[8];
-	int swp_port_len;
+	s8 swp_in6[128];
+	s32 swp_in6_len;
+	s8 swp_port[8];
+	s32 swp_port_len;
 
 	if(!addr || addr->type != UNITYPE_SA6 || !str || lim < 0) {
 		ALARM(ALARM_WARN, "addr or str undefined or wrong address type "
@@ -263,12 +265,12 @@ UNIADDR_API int uniaddr_str_sa6(struct uniaddr *addr, char *str, int lim)
 	memcpy(mdl_in6, addr->data, 16);
 	memcpy(&mdl_port, addr->data + 16, 2);
 
-	if(inet_ntop(AF_INET6, mdl_in6, swp_in6, 64) == NULL)
+	if(inet_ntop(AF_INET6, mdl_in6, (char *)swp_in6, 64) == NULL)
 		goto err_return;
-	swp_in6_len = strlen(swp_in6);
+	swp_in6_len = strlen((char *)swp_in6);
 
 	mdl_port = htons(mdl_port);
-	if((swp_port_len = sprintf(swp_port, "%d", mdl_port)) < 0)
+	if((swp_port_len = sprintf((char *)swp_port, "%d", mdl_port)) < 0)
 		goto err_return;
 
 	if(swp_in6_len + swp_port_len + 2 > lim)

@@ -15,7 +15,7 @@
  *
  * Returns: 0 on success or -1 if an error occurred
  */
-UNIADDR_API int uniaddr_f_in4(struct uniaddr *addr, char *ptr, int len);
+UNIADDR_API s32 uniaddr_f_in4(struct uniaddr *addr, s8 *ptr, s32 len);
 
 
 /*
@@ -27,7 +27,7 @@ UNIADDR_API int uniaddr_f_in4(struct uniaddr *addr, char *ptr, int len);
  *
  * Returns: 0 on success or -1 if an error occurred
  */
-UNIADDR_API int uniaddr_f_in6(struct uniaddr *addr, char *ptr, int len);
+UNIADDR_API s32 uniaddr_f_in6(struct uniaddr *addr, s8 *ptr, s32 len);
 
 
 /*
@@ -39,7 +39,7 @@ UNIADDR_API int uniaddr_f_in6(struct uniaddr *addr, char *ptr, int len);
  *
  * Returns: 0 on success or -1 if an error occurred
  */
-UNIADDR_API int uniaddr_f_sa4(struct uniaddr *addr, char *ptr, int len);
+UNIADDR_API s32 uniaddr_f_sa4(struct uniaddr *addr, s8 *ptr, s32 len);
 
 
 /*
@@ -51,7 +51,7 @@ UNIADDR_API int uniaddr_f_sa4(struct uniaddr *addr, char *ptr, int len);
  *
  * Returns: 0 on success or -1 if an error occurred
  */
-UNIADDR_API int uniaddr_f_sa6(struct uniaddr *addr, char *ptr, int len);
+UNIADDR_API s32 uniaddr_f_sa6(struct uniaddr *addr, s8 *ptr, s32 len);
 
 
 
@@ -66,7 +66,7 @@ UNIADDR_API int uniaddr_f_sa6(struct uniaddr *addr, char *ptr, int len);
  * Returns: Either the number of bytes written to the string pointer including
  *          the nullterminator or -1 if an error occurred
  */
-UNIADDR_API int uniaddr_str_in4(struct uniaddr *addr, char *str, int lim);
+UNIADDR_API s32 uniaddr_str_in4(struct uniaddr *addr, s8 *str, s32 lim);
 
 
 /*
@@ -80,7 +80,7 @@ UNIADDR_API int uniaddr_str_in4(struct uniaddr *addr, char *str, int lim);
  * Returns: Either the number of bytes written to the string pointer including
  *          the nullterminator or -1 if an error occurred
  */
-UNIADDR_API int uniaddr_str_in6(struct uniaddr *addr, char *str, int lim);
+UNIADDR_API s32 uniaddr_str_in6(struct uniaddr *addr, s8 *str, s32 lim);
 
 
 /*
@@ -94,7 +94,7 @@ UNIADDR_API int uniaddr_str_in6(struct uniaddr *addr, char *str, int lim);
  * Returns: Either the number of bytes written to the string pointer including
  *          the nullterminator or -1 if an error occurred
  */
-UNIADDR_API int uniaddr_str_sa4(struct uniaddr *addr, char *str, int lim);
+UNIADDR_API s32 uniaddr_str_sa4(struct uniaddr *addr, s8 *str, s32 lim);
 
 
 /*
@@ -108,7 +108,7 @@ UNIADDR_API int uniaddr_str_sa4(struct uniaddr *addr, char *str, int lim);
  * Returns: Either the number of bytes written to the string pointer including
  *          the nullterminator or -1 if an error occurred
  */
-UNIADDR_API int uniaddr_str_sa6(struct uniaddr *addr, char *str, int lim);
+UNIADDR_API s32 uniaddr_str_sa6(struct uniaddr *addr, s8 *str, s32 lim);
 
 
 #endif /* _UNIADDR_UTILS_H */

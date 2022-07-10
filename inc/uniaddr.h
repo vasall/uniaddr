@@ -4,17 +4,16 @@
 struct uniaddr;
 
 #include "define.h"
+#include "imports.h"
 #include "utils.h"
-
-#include "../../alarm/inc/alarm.h"
 
 #include <stdint.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 
-#define UNIADDR_LEN 32
+#define UNIADDR_LEN            32
 
-typedef uint8_t unitype_t;
+typedef u8 unitype_t;
 
 enum uniaddr_type {
 	/* Internet-Address */
@@ -35,15 +34,15 @@ struct uniaddr {
 	/*
 	 * The buffer containing the address.
 	 */
-	uint8_t                data[UNIADDR_LEN];
+	u8                data[UNIADDR_LEN];
 };
 
 
 struct unimask {
-	short                  off;
-	short                  len;
+	s16                  off;
+	s16                  len;
 
-	uint8_t               data[UNIADDR_LEN];
+	u8               data[UNIADDR_LEN];
 };
 
 /*
@@ -62,7 +61,7 @@ UNIADDR_API void uniaddr_clear(struct uniaddr *addr);
  *
  * Returns: 0 on success or -1 if an error occurred
  */
-UNIADDR_API int uniaddr_copy(struct uniaddr *out, struct uniaddr *in);
+UNIADDR_API s32 uniaddr_copy(struct uniaddr *out, struct uniaddr *in);
 
 
 /*
@@ -75,8 +74,8 @@ UNIADDR_API int uniaddr_copy(struct uniaddr *out, struct uniaddr *in);
  *
  * Returns: 0 on success or -1 if an error occurred
  */
-UNIADDR_API int uniaddr_parse(struct uniaddr *addr, unitype_t type,
-		void *ptr, int len);
+UNIADDR_API s32 uniaddr_parse(struct uniaddr *addr, unitype_t type,
+		void *ptr, s32 len);
 
 
 /*
@@ -89,7 +88,7 @@ UNIADDR_API int uniaddr_parse(struct uniaddr *addr, unitype_t type,
  * Returns: Either the number of bytes written to the buffer or -1 if an error
  *          occurred
  */
-UNIADDR_API int uniaddr_str(struct uniaddr *addr, char *str, int lim);
+UNIADDR_API s32 uniaddr_str(struct uniaddr *addr, s8 *str, s32 lim);
 
 
 /*
@@ -100,7 +99,7 @@ UNIADDR_API int uniaddr_str(struct uniaddr *addr, char *str, int lim);
  *
  * Returns: 0 on success or -1 if an error occurred
  */
-UNIADDR_API int uniaddr_fsa(struct uniaddr *addr, struct sockaddr *sa);
+UNIADDR_API s32 uniaddr_fsa(struct uniaddr *addr, struct sockaddr *sa);
 
 
 /*
@@ -121,8 +120,8 @@ UNIADDR_API void unimask_clear(struct unimask *mask);
  *
  * Returns: 0 on success or -1 if an error occurred
  */
-UNIADDR_API int unimask_set(struct unimask *mask, short off, int len,
-		unsigned char *ptr); 
+UNIADDR_API s32 unimask_set(struct unimask *mask, s16 off, s32 len,
+		u8 *ptr); 
 
 /*
  * Create a mask from an address.
@@ -132,7 +131,7 @@ UNIADDR_API int unimask_set(struct unimask *mask, short off, int len,
  *
  * Returns: 0 on success or -1 if an error occurred
  */
-UNIADDR_API int unimask_faddr(struct unimask *mask,
+UNIADDR_API s32 unimask_faddr(struct unimask *mask,
 		struct uniaddr *addr);
 
 
@@ -144,6 +143,17 @@ UNIADDR_API int unimask_faddr(struct unimask *mask,
  *
  * Returns: 1 if the mask fits, 0 if not and -1 if an error occurred
  */
-UNIADDR_API int unimask_use(struct uniaddr *addr, struct unimask *mask);
+UNIADDR_API s32 unimask_use(struct uniaddr *addr, struct unimask *mask);
+
+
+/*
+ * Dump an address into the console and print the bytes both in hex-code and as
+ * ASCII-characters.
+ *
+ * @addr: Pointer to the uniaddr struct to dump
+ *
+ * Returns: 0 on success or -1 if an error occurred
+ */
+UNIADDR_API s32 uniaddr_dump(struct uniaddr *addr);
 
 #endif /* _UNIADDR_UNIADDR_H */

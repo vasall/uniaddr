@@ -15,7 +15,7 @@ UNIADDR_API void uniaddr_clear(struct uniaddr *addr)
 }
 
 
-UNIADDR_API int uniaddr_copy(struct uniaddr *out, struct uniaddr *in)
+UNIADDR_API s32 uniaddr_copy(struct uniaddr *out, struct uniaddr *in)
 {
 	if(!out || !in) {
 		ALARM(ALARM_WARN, "out or in undefined");
@@ -27,14 +27,14 @@ UNIADDR_API int uniaddr_copy(struct uniaddr *out, struct uniaddr *in)
 }
 
 
-UNIADDR_API int uniaddr_parse(struct uniaddr *addr, unitype_t type,
-		void *ptr, int len)
+UNIADDR_API s32 uniaddr_parse(struct uniaddr *addr, unitype_t type,
+		void *ptr, s32 len)
 {
 	if(!addr || !ptr || len < 0) {
 		ALARM(ALARM_WARN, "addr or ptr undefined or len invalid");
 		return -1;
 	}
-	
+
 	uniaddr_clear(addr);
 
 	switch(type) {
@@ -67,10 +67,10 @@ err_return:
 }
 
 
-UNIADDR_API int uniaddr_str(struct uniaddr *addr, char *str, int lim)
+UNIADDR_API s32 uniaddr_str(struct uniaddr *addr, s8 *str, s32 lim)
 {
-	static char swp[128];
-	int len;
+	static s8 swp[128];
+	s32 len;
 
 	if(!addr || !str || lim < 0) {
 		ALARM(ALARM_WARN, "addr or str undefined or lim invalid");
@@ -102,7 +102,7 @@ UNIADDR_API int uniaddr_str(struct uniaddr *addr, char *str, int lim)
 	if(len > lim)
 		goto err_return;
 
-	strcpy(str, swp);
+	strcpy((char *)str, (char *)swp);
 
 	return len;
 
@@ -112,7 +112,7 @@ err_return:
 }
 
 
-UNIADDR_API int uniaddr_fsa(struct uniaddr *addr, struct sockaddr *sa)
+UNIADDR_API s32 uniaddr_fsa(struct uniaddr *addr, struct sockaddr *sa)
 {
 	if(!addr || !sa) {
 		ALARM(ALARM_WARN, "addr or sa undefined");
@@ -163,8 +163,8 @@ UNIADDR_API void unimask_clear(struct unimask *mask)
 
 
 
-UNIADDR_API int unimask_set(struct unimask *mask, short off, int len,
-		unsigned char *ptr)
+UNIADDR_API s32 unimask_set(struct unimask *mask, s16 off, s32 len,
+		u8 *ptr)
 {
 	if(!mask) {
 		ALARM(ALARM_WARN, "mask undefined");
@@ -181,7 +181,7 @@ UNIADDR_API int unimask_set(struct unimask *mask, short off, int len,
 }
 
 
-UNIADDR_API int unimask_faddr(struct unimask *mask,
+UNIADDR_API s32 unimask_faddr(struct unimask *mask,
 		struct uniaddr *addr)
 {
 	if(!mask || !addr) {
@@ -200,9 +200,9 @@ UNIADDR_API int unimask_faddr(struct unimask *mask,
 }
 
 
-UNIADDR_API int unimask_use(struct uniaddr *addr, struct unimask *mask)
+UNIADDR_API s32 unimask_use(struct uniaddr *addr, struct unimask *mask)
 {
-	int i;
+	s32 i;
 
 	if(!addr || !mask) {
 		ALARM(ALARM_WARN, "addr or mask undefined");
@@ -215,4 +215,47 @@ UNIADDR_API int unimask_use(struct uniaddr *addr, struct unimask *mask)
 	}
 
 	return 1;
+}
+
+
+#define UNIADDR_DUMP_LINE   16
+
+
+UNIADDR_API s32 uniaddr_dump(struct uniaddr *addr)
+{
+	u8 buf[17];
+	u8 *pc = (u8 *)addr;
+	s32 i;
+
+	if(!addr) {
+		ALARM(ALARM_WARN, "addr undefined");
+		return -1;
+	}
+
+	for(i = 0; i < UNIADDR_LEN; i++) {
+		if ((i % UNIADDR_DUMP_LINE) == 0) {
+			if (i != 0)
+				printf("  %s\n", buf);
+
+			printf("  %04x ", i);
+		}
+
+		printf(" %02x", pc[i]);
+
+		if ((pc[i] < 0x20) || (pc[i] > 0x7e))
+			buf[i % 16] = '.';
+		else
+			buf[i % 16] = pc[i];
+
+		buf[(i % 16) + 1] = '\0';
+	}
+
+	while((i % 16) != 0) {
+		printf("   ");
+		i++;
+	}
+
+	printf("  %s\n", buf);
+
+	return 0;
 }
