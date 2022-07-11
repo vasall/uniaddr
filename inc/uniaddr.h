@@ -5,6 +5,7 @@ struct uniaddr;
 
 #include "define.h"
 #include "imports.h"
+#include "unitypes.h"
 #include "utils.h"
 
 #include <stdint.h>
@@ -13,17 +14,6 @@ struct uniaddr;
 
 #define UNIADDR_LEN            32
 
-typedef u8 unitype_t;
-
-enum uniaddr_type {
-	/* Internet-Address */
-	UNITYPE_IN4,
-	UNITYPE_IN6,
-
-	/* Socket-Address */
-	UNITYPE_SA4,
-	UNITYPE_SA6
-};
 
 struct uniaddr {
 	/*
@@ -70,7 +60,8 @@ UNIADDR_API s8 uniaddr_copy(struct uniaddr *out, struct uniaddr *in);
  * @addr: A pointer to the address to parse the data to
  * @type: The type of the address
  * @ptr: A pointer to the string containing the address
- * @len: The length of the address string in bytes
+ * @len: The length of the address string in bytes or 0 to autodetect the length
+ *       of the string. For this the string has to be null terminated
  *
  * Returns: 0 on success or -1 if an error occurred
  */
@@ -100,6 +91,17 @@ UNIADDR_API s32 uniaddr_str(struct uniaddr *addr, s8 *str, s32 lim);
  * Returns: 0 on success or -1 if an error occurred
  */
 UNIADDR_API s8 uniaddr_fsa(struct uniaddr *addr, struct sockaddr *sa);
+
+
+/*
+ * Dump an address into the console and print the bytes both in hex-code and as
+ * ASCII-characters.
+ *
+ * @addr: Pointer to the uniaddr struct to dump
+ *
+ * Returns: 0 on success or -1 if an error occurred
+ */
+UNIADDR_API s8 uniaddr_dump(struct uniaddr *addr);
 
 
 /*
@@ -145,15 +147,5 @@ UNIADDR_API s8 unimask_faddr(struct unimask *mask,
  */
 UNIADDR_API s8 unimask_use(struct uniaddr *addr, struct unimask *mask);
 
-
-/*
- * Dump an address into the console and print the bytes both in hex-code and as
- * ASCII-characters.
- *
- * @addr: Pointer to the uniaddr struct to dump
- *
- * Returns: 0 on success or -1 if an error occurred
- */
-UNIADDR_API s8 uniaddr_dump(struct uniaddr *addr);
 
 #endif /* _UNIADDR_UNIADDR_H */

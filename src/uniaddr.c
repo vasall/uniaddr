@@ -35,6 +35,12 @@ UNIADDR_API s8 uniaddr_parse(struct uniaddr *addr, unitype_t type,
 		return -1;
 	}
 
+	/*
+	 * Autodetect the length of the string.
+	 */
+	if(len == 0)
+		len = strlen(ptr);
+
 	uniaddr_clear(addr);
 
 	switch(type) {
@@ -151,6 +157,46 @@ err_return:
 }
 
 
+UNIADDR_API s8 uniaddr_dump(struct uniaddr *addr)
+{
+	u8 buf[17];
+	u8 *pc = (u8 *)addr;
+	s32 i;
+
+	if(!addr) {
+		ALARM(ALARM_WARN, "addr undefined");
+		return -1;
+	}
+
+	for(i = 0; i < UNIADDR_LEN; i++) {
+		if ((i % UNIADDR_DUMP_LINE) == 0) {
+			if (i != 0)
+				printf("  %s\n", buf);
+
+			printf("  %04x ", i);
+		}
+
+		printf(" %02x", pc[i]);
+
+		if ((pc[i] < 0x20) || (pc[i] > 0x7e))
+			buf[i % 16] = '.';
+		else
+			buf[i % 16] = pc[i];
+
+		buf[(i % 16) + 1] = '\0';
+	}
+
+	while((i % 16) != 0) {
+		printf("   ");
+		i++;
+	}
+
+	printf("  %s\n", buf);
+
+	return 0;
+}
+
+
 UNIADDR_API void unimask_clear(struct unimask *mask)
 {
 	if(!mask) {
@@ -215,47 +261,4 @@ UNIADDR_API s8 unimask_use(struct uniaddr *addr, struct unimask *mask)
 	}
 
 	return 1;
-}
-
-
-#define UNIADDR_DUMP_LINE   16
-
-
-UNIADDR_API s8 uniaddr_dump(struct uniaddr *addr)
-{
-	u8 buf[17];
-	u8 *pc = (u8 *)addr;
-	s32 i;
-
-	if(!addr) {
-		ALARM(ALARM_WARN, "addr undefined");
-		return -1;
-	}
-
-	for(i = 0; i < UNIADDR_LEN; i++) {
-		if ((i % UNIADDR_DUMP_LINE) == 0) {
-			if (i != 0)
-				printf("  %s\n", buf);
-
-			printf("  %04x ", i);
-		}
-
-		printf(" %02x", pc[i]);
-
-		if ((pc[i] < 0x20) || (pc[i] > 0x7e))
-			buf[i % 16] = '.';
-		else
-			buf[i % 16] = pc[i];
-
-		buf[(i % 16) + 1] = '\0';
-	}
-
-	while((i % 16) != 0) {
-		printf("   ");
-		i++;
-	}
-
-	printf("  %s\n", buf);
-
-	return 0;
 }
