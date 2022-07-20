@@ -1,7 +1,5 @@
 #include "utils.h"
 
-#include "imports.h"
-
 #include <stdlib.h>
 #include <string.h>
 
@@ -162,12 +160,12 @@ UNIADDR_API s32 uniaddr_str_in4(struct uniaddr *addr, s8 *str, s32 lim)
 
 	if(inet_ntop(AF_INET, addr->data, (char *)swpbuf, 128) == NULL)
 		goto err_return;
-	swplen = strlen((char *)swpbuf) + 1;
+	swplen = tozero(swpbuf) + 1;
 
 	if(swplen > lim)
 		goto err_return;
 
-	strcpy((char *)str, (char *)swpbuf);
+	cpytozero(str, swpbuf);
 	return swplen;
 
 err_return:
@@ -189,12 +187,12 @@ UNIADDR_API s32 uniaddr_str_in6(struct uniaddr *addr, s8 *str, s32 lim)
 
 	if(inet_ntop(AF_INET6, addr->data, (char *)swpbuf, 128) == NULL)
 		goto err_return;
-	swplen = strlen((char *)swpbuf) + 1;
+	swplen = tozero(swpbuf) + 1;
 
 	if(swplen > lim)
 		goto err_return;
 
-	strcpy((char *)str, (char *)swpbuf);
+	cpytozero(str, swpbuf);
 	return swplen;
 
 err_return:
@@ -224,7 +222,7 @@ UNIADDR_API s32 uniaddr_str_sa4(struct uniaddr *addr, s8 *str, s32 lim)
 
 	if(inet_ntop(AF_INET, mdl_in4, (char *)swp_in4, 64) == NULL)
 		goto err_return;
-	swp_in4_len = strlen((char *)swp_in4);
+	swp_in4_len = tozero(swp_in4);
 
 	mdl_port = htons(mdl_port);
 	if((swp_port_len = sprintf((char *)swp_port, "%d", mdl_port)) < 0)
@@ -267,7 +265,7 @@ UNIADDR_API s32 uniaddr_str_sa6(struct uniaddr *addr, s8 *str, s32 lim)
 
 	if(inet_ntop(AF_INET6, mdl_in6, (char *)swp_in6, 64) == NULL)
 		goto err_return;
-	swp_in6_len = strlen((char *)swp_in6);
+	swp_in6_len = tozero(swp_in6);
 
 	mdl_port = htons(mdl_port);
 	if((swp_port_len = sprintf((char *)swp_port, "%d", mdl_port)) < 0)

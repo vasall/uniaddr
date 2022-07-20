@@ -38,8 +38,10 @@ UNIADDR_API s8 uniaddr_parse(struct uniaddr *addr, unitype_t type,
 	/*
 	 * Autodetect the length of the string.
 	 */
-	if(len == 0)
-		len = strlen(ptr);
+	if(len == 0) {
+		if((len = tozero(ptr)) < 0)
+			goto err_return;
+	}
 
 	uniaddr_clear(addr);
 
@@ -108,7 +110,7 @@ UNIADDR_API s32 uniaddr_str(struct uniaddr *addr, s8 *str, s32 lim)
 	if(len > lim)
 		goto err_return;
 
-	strcpy((char *)str, (char *)swp);
+	cpytozero(str, swp);
 
 	return len;
 

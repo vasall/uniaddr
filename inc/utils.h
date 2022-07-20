@@ -2,6 +2,7 @@
 #define _UNIADDR_UTILS_H
 
 #include "define.h"
+#include "imports.h"
 #include "uniaddr.h"
 
 #include <arpa/inet.h>
